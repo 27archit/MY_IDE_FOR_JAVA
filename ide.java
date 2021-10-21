@@ -16,6 +16,7 @@ JScrollPane jsp;
 JMenuBar mb;
 JMenu file,edit,format,font,color,style,size,r_c;
 JMenuItem new1,new2,open,save,saveas,exit,cut,copy,paste,bold,italic,plain,te,tw,th,back,fore,run,compile;          //te=10,tw=20,th=30
+
 note()
 {
 f=new JFrame("UNTITLED");
@@ -549,7 +550,7 @@ c=c+1;
 s=s+String.valueOf((char)i);
 }
 if(c!=0)
-JOptionPane.showMessageDialog(f,s,"EXCEPTION OCCURED",JOptionPane.ERROR_MESSAGE);
+	JOptionPane.showMessageDialog(f,s,"EXCEPTION OR ERROR OCCURED",JOptionPane.ERROR_MESSAGE);
 else
 {
 InputStream iir=p.getInputStream();
@@ -565,23 +566,58 @@ ss=ss+String.valueOf((char)i);
 System.out.print("b2"+ee);
 }
 }
+
+
 else if(e.getSource()==compile)
 {
 try
 {
 Runtime rt=Runtime.getRuntime();
-Process p=rt.exec("javac "+f.getTitle());
+ide1.storeValue(ide1.az,ide1.abc,ide1.azb,ide1.bac);
+
+Process p=rt.exec("cd/");
+
+StringTokenizer st=new StringTokenizer(z,"\");
+ArrayList<String> results=new ArrayList<String>();
+while(st.hasMoreTokens())
+{
+results.add(st.nextToken());
+}
+
+p=rt.exec(results.get(0));
+
+/*
+Iterator itr=results.iterator();
+
+while(itr.hasNext())
+{
+p=rt.exec("cd "+itr.next);
+}
+*/
+
+if(int i=1;i<results.size();i++)
+{
+p=rt.exec("cd "+results.get(i));
+}
+
+//Process p=rt.exec("cd "+ide1.az);
+p=rt.exec("javac "+f.getTitle());
 InputStream ir=p.getErrorStream();
 int i=0,c=0;
 String s="";
 while((i=ir.read())!=-1)
 {
+c=c+1;
 s=s+String.valueOf((char)i);
 }
 if(c==0)
-ta.setText("SUCCESSFULLY COMPILED");
+{
+JOptionPane.showMessageDialog(f,s,"SUCCESSFULLY COMPILED",JOptionPane.INFORMATION_MESSAGE);
+}
 else
+{
 JOptionPane.showMessageDialog(f,s,"ERROR OCCURED",JOptionPane.ERROR_MESSAGE);
+}
 }catch(Exception ee)
 {
 System.out.print("b1"+ee);

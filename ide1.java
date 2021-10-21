@@ -188,6 +188,7 @@ for(int i=0;i<listOfFiles.length;i++)
 {
 if(listOfFiles[i].isFile())
 {
+
 //System.out.println("File "+listOfFiles[i].getName());
 DefaultMutableTreeNode ae=new DefaultMutableTreeNode(listOfFiles[i].getName());
 
@@ -205,6 +206,7 @@ ad.add(ae);
 }
 else if(listOfFiles[i].isDirectory())
 {
+
 //System.out.println("Directory "+listOfFiles[i].getName());
 //DefaultMutableTreeNode am=new DefaultMutableTreeNode(listOfFiles[i].getName());
 ad1=new DefaultMutableTreeNode(listOfFiles[i].getName());
@@ -213,6 +215,7 @@ bac=listOfFiles[i].getName();
 az=az+"\\"+bac;
 abc1(az,bac,ad1);
 ad.add(ad1);
+
 }
 }
 t=new JTree(ad);
@@ -441,7 +444,7 @@ if(ar.equals("java"))
 String h="public class "+n+"\n{\n public static void main(String ar[])\n{\n"+n+" ab=new "+n+"();\n}\n}";
 note.ta.setText(h);
 try{
-FileOutputStream f=new FileOutputStream(z);
+FileOutputStream f=new FileOutputStream(a+"\\"+z);
 byte b[]=h.getBytes();
 for(int i=0;i<b.length;i++)
 {
@@ -457,7 +460,7 @@ else
 {
 String h="";
 try{
-FileOutputStream f=new FileOutputStream(z);
+FileOutputStream f=new FileOutputStream(a+"\\"+z);
 byte b[]=h.getBytes();
 for(int i=0;i<b.length;i++)
 {
@@ -490,7 +493,7 @@ j=j.substring(1);
 }
 
 try{
-FileOutputStream f=new FileOutputStream(j);
+FileOutputStream f=new FileOutputStream(a+"\\"+j);
 String h=note.ta.getText();
 byte b[]=h.getBytes();
 for(int i=0;i<b.length;i++)
@@ -589,6 +592,13 @@ new File(az+"\\"+s).mkdirs();
 }
 
 }
+
+
+
+
+
+
+
 
 public void valueChanged(TreeSelectionEvent e)
 {
