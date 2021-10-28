@@ -6,7 +6,7 @@ import java.io.*;
 import java.util.*;
 import java.lang.*;
 
-class note extends KeyAdapter implements ActionListener
+class note extends KeyAdapter /*, WindowAdapter*/ implements ActionListener , WindowListener
 {
 JPanel p;
 String s;
@@ -15,7 +15,7 @@ static JTextArea ta;
 JScrollPane jsp;
 JMenuBar mb;
 JMenu file,edit,format,font,color,style,size,r_c;
-JMenuItem new1,new2,open,save,saveas,exit,cut,copy,paste,bold,italic,plain,te,tw,th,back,fore,run,compile;          //te=10,tw=20,th=30
+JMenuItem new1,new2,open,save,saveas,exit,cut,copy,paste,bold,italic,plain,te,tw,th,back,fore,run,compile,Open_Cmd;          //te=10,tw=20,th=30
 
 note()
 {
@@ -51,6 +51,7 @@ fore=new JMenuItem("FORE");
 run=new JMenuItem("RUN");
 compile=new JMenuItem("COMPILE");
 p=new JPanel();
+Open_Cmd=new JMenuItem("OPEN_CMD");
 
 ide1 abcd1=new ide1();
 
@@ -80,6 +81,7 @@ format.add(color);
 format.add(font);
 r_c.add(run);
 r_c.add(compile);
+r_c.add(Open_Cmd);
 mb.add(file);
 mb.add(edit);
 mb.add(format);
@@ -114,8 +116,52 @@ r_c.addActionListener(this);
 run.addActionListener(this);
 compile.addActionListener(this);
 ta.addKeyListener(this);
-f.setSize(1000,700);
+Open_Cmd.addActionListener(this);
+f.addWindowListener(this);
+
+//To get the full screen display
+Dimension size=Toolkit.getDefaultToolkit().getScreenSize();
+int width=(int)size.getWidth();
+int height=(int)size.getHeight();
+System.out.println("\n\nWidth :- "+width+"\nHeight :- "+height+"\n\n");
+
+f.setSize(width,height);
 f.setVisible(true);
+
+}
+
+public void windowDeactivated(WindowEvent e)
+{}
+
+public void windowActivated(WindowEvent e)
+{}
+
+public void windowDeiconified(WindowEvent e)
+{}
+
+public void windowIconified(WindowEvent e)
+{}
+
+public void windowClosed(WindowEvent e)
+{}
+
+public void windowOpened(WindowEvent e)
+{}
+
+public void windowClosing(WindowEvent e)
+{
+
+String jcb=f.getTitle();
+
+if(jcb.charAt(0)=='*')
+{
+JOptionPane.showMessageDialog(f,"Please save the file first!","Information Box",JOptionPane.INFORMATION_MESSAGE);
+}
+
+else
+{
+System.out.print(0);
+}
 
 }
 
@@ -577,8 +623,8 @@ ide1.storeValue(ide1.az,ide1.abc,ide1.azb,ide1.bac);
 
 Process p=rt.exec("cd/");
 
-StringTokenizer st=new StringTokenizer(z,"\");
-ArrayList<String> results=new ArrayList<String>();
+//StringTokenizer st=new StringTokenizer(z,"\\");
+/*ArrayList<String> results=new ArrayList<String>();
 while(st.hasMoreTokens())
 {
 results.add(st.nextToken());
@@ -586,20 +632,22 @@ results.add(st.nextToken());
 
 p=rt.exec(results.get(0));
 
-/*
+
 Iterator itr=results.iterator();
 
 while(itr.hasNext())
 {
 p=rt.exec("cd "+itr.next);
 }
-*/
 
-if(int i=1;i<results.size();i++)
+
+int n,a=results.size();
+
+for(n=1;i<a;i++)
 {
 p=rt.exec("cd "+results.get(i));
 }
-
+*/
 //Process p=rt.exec("cd "+ide1.az);
 p=rt.exec("javac "+f.getTitle());
 InputStream ir=p.getErrorStream();
@@ -623,7 +671,13 @@ JOptionPane.showMessageDialog(f,s,"ERROR OCCURED",JOptionPane.ERROR_MESSAGE);
 System.out.print("b1"+ee);
 }
 }
+else if(e.getSource()==Open_Cmd)
+{
+ide2 ascd=new ide2();
 }
+
+}
+
 public static void main(String ar[])
 {
 note n=new note();
