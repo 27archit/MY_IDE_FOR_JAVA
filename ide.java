@@ -19,6 +19,7 @@ JMenuItem new1,new2,open,save,saveas,exit,cut,copy,paste,bold,italic,plain,te,tw
 
 note()
 {
+
 f=new JFrame("UNTITLED");
 ta=new JTextArea();
 jsp=new JScrollPane(ta);

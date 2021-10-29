@@ -8,6 +8,7 @@ import java.util.*; //ArrayList;
 import java.io.*;
 import javax.swing.tree.*;
 import javax.swing.event.*;     //TreeSelectionListener;
+import java.sql.*;
 
 class ide1 extends DefaultTreeCellRenderer implements ActionListener , TreeSelectionListener
 {
@@ -21,9 +22,23 @@ static String image="",n="",ar="",z="",az="",abc="",azb="",a="",b="",c="",bac=""
 static DefaultMutableTreeNode ad=null,ad1=null;
 static DefaultTreeCellRenderer renderer;
 static JScrollPane jsp;
+Connection co;
+PreparedStatement st;
+ResultSet rs;
 
 ide1()
 {
+
+//Creating the connection with database
+try{
+
+Class.forName("com.mysql.jdbc.Driver");
+co=DriverManager.getConnection("jdbc:mysql://localhost:3306/ide","root",null);
+
+}catch(Exception e)
+{
+System.out.print("Connection "+e);
+}
 
 f=new Frame("Choose a file to delete");
 
@@ -129,6 +144,64 @@ t.addTreeSelectionListener(this);
 System.out.print("\n"+"hello"+az);
 System.out.print("\n"+"hiii"+abc);
 
+try{
+
+String path="",dir="";
+st=co.prepareStatement("Select * from path where Recent_Path=?");
+st.setString(1,a);
+rs=st.executeQuery();
+int count=0,SNo=0;
+while(rs.next())
+{
+SNo=rs.getInt(1);
+path=rs.getString(2);
+dir=rs.getString(3);
+count++;
+}
+
+st.close();
+rs.close();
+
+if(count==0)
+{
+
+st=co.prepareStatement("Insert into path (Recent_Path,Directory_Name) values (?,?)");
+st.setString(1,a);
+st.setString(2,d);
+st.executeUpdate();
+st.close();
+
+}
+
+else if(count==1)
+{
+
+st=co.prepareStatement("Delete from path where Recent_Path=?");
+st.setString(1,path);
+st.executeUpdate();
+st.close();
+
+st=co.prepareStatement("Insert into path (S.No.,Recent_Path,Directory_Name) values (?,?,?)");
+st.setInt(1,SNo);
+st.setString(2,path);
+st.setString(3,dir);
+st.executeUpdate();
+st.close();
+
+}
+
+else
+{
+
+System.out.print("\nSomethingWentWrong!\n");
+
+}
+
+}catch(Exception e)
+{
+System.out.print("Insertion "+e);
+}
+
 }
 
 public static void path()
@@ -172,6 +245,7 @@ public static void storeValue(String az,String abc,String azb,String bac)
 b=abc;
  c=azb;
 d=bac;
+
 }
 
 public static void abc(String az,String bac)
